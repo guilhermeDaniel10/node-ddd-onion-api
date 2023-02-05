@@ -1,0 +1,28 @@
+version: '3.0'
+services:
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/usr/app/src
+    ports:
+      - 3000:3000
+  database:
+    container_name: database
+    image: mysql:8.0.23
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    ports:
+      - 3838:3306
+  adminer:
+    container_name: f4i-adminer
+    image: adminer
+    restart: always
+    ports:
+      - 6789:8080
+    links:
+      - database
