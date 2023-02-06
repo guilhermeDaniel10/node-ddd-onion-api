@@ -1,22 +1,35 @@
-import "reflect-metadata"; // We need this in order to use @Decorators
+import express, { Application } from 'express';
+import morgan from 'morgan';
 
-import config from "./config";
-import express from "express"; 
+export class App {
 
-async function startServer() {
-  const app = express();
+    private app: Application;
 
-   
-  app  
-    .listen(config.port, () => {
-      console.log("Server listening on port: " + config.port);
-    })
-    .on("error", (err) => {
-      console.error(err);
-      process.exit(1);
-      return; 
-    });
+    constructor(private port?: number | string) {
+        this.app = express();
+        this.settings();
+        //this.middlewares();
+        //this.routes();
+    }
 
-} 
+    settings() {
+        this.app.set('port', this.port || process.env.PORT || 3000);
+    }
 
-startServer();
+    /*middlewares() {
+        this.app.use(morgan('dev'));
+        // this.app.use(express.urlencoded({extended:false}));
+        this.app.use(express.json());
+    }*/
+
+    /*routes() {
+        this.app.use(indexRoutes);
+        this.app.use('/posts', postRoutes);
+    }*/
+
+    async listen() {
+        await this.app.listen( this.app.get('port'));
+        console.log(`Server listening at port ${ this.app.get('port') }`);
+    }
+    
+}
