@@ -15,10 +15,8 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "includes": [
-    "src/infra/sequelize/**/*.js",
-    "src/infra/sequelize/**/*.ts",
-    "./src/**/*.js",
-    "./src/**/*.ts"
+    "./src/**/*",
+    "./src/api/middlewares/*"
   ],
   "exclude": ["node_modules", "src/**/*.spec.ts"]
 }
