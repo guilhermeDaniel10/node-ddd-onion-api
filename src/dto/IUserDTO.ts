@@ -1,0 +1,8 @@
+export interface IUserDTO {
+  firstName: string;
+  lastName: string;
+  email: string;
+  address: string;
+  password: string;
+  creationDate: Date;
+}

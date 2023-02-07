@@ -1,35 +1,24 @@
-import express, { Application } from 'express';
-import morgan from 'morgan';
+import express, { Application } from "express";
+import dotenv from "dotenv";
+import morgan from "morgan";
+import connection from "./configurations/database";
+import dependencyInjectorLoader from "./loaders/dependencyInjector";
 
-export class App {
+dotenv.config();
 
-    private app: Application;
+async function startServer() {
+  const app = express();
+  await require("./loaders").default({ expressApp: app });
 
-    constructor(private port?: number | string) {
-        this.app = express();
-        this.settings();
-        //this.middlewares();
-        //this.routes();
-    }
-
-    settings() {
-        this.app.set('port', this.port || process.env.PORT || 3000);
-    }
-
-    /*middlewares() {
-        this.app.use(morgan('dev'));
-        // this.app.use(express.urlencoded({extended:false}));
-        this.app.use(express.json());
-    }*/
-
-    /*routes() {
-        this.app.use(indexRoutes);
-        this.app.use('/posts', postRoutes);
-    }*/
-
-    async listen() {
-        await this.app.listen( this.app.get('port'));
-        console.log(`Server listening at port ${ this.app.get('port') }`);
-    }
-    
+  app
+    .listen(process.env.PORT, () => {
+      console.log("Server listening on port: " + process.env.PORT);
+    })
+    .on("error", (err) => {
+      console.error(err);
+      process.exit(1);
+      return;
+    });
 }
+
+startServer();

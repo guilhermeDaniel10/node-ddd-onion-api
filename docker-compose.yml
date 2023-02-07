@@ -18,6 +18,8 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     ports:
       - 3838:3306
+    security_opt:
+      - seccomp:unconfined
   adminer:
     container_name: f4i-adminer
     image: adminer
