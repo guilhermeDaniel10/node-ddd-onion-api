@@ -30,6 +30,14 @@ export class User extends AggregateRoot<UserProps> {
     return this.props.email;
   }
 
+  get emailValue(): string {
+    return this.email.value;
+  }
+
+  get address(): UserAddress {
+    return this.props.address;
+  }
+
   get firstName(): string {
     return this.props.firstName.value;
   }
@@ -58,7 +66,7 @@ export class User extends AggregateRoot<UserProps> {
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
 
     if (!guardResult.succeeded) {
-      return Result.fail<User>(guardResult.message);
+      return Result.fail<User>(guardResult.message || '');
     } else {
       const user = new User(
         {

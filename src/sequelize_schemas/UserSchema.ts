@@ -4,7 +4,7 @@ import { Table, Model, Column, DataType } from "sequelize-typescript";
   timestamps: true,
   tableName: "user",
 })
-export class User extends Model {
+export class UserSchema extends Model {
   @Column({
     type: DataType.STRING,
     allowNull: false,

@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize-typescript";
 
 import dotenv from "dotenv";
-import { User } from "../sequelize_schemas/User";
+import { UserSchema } from "../sequelize_schemas/UserSchema";
 
 dotenv.config();
 
@@ -12,7 +12,7 @@ const connection = new Sequelize({
   password: process.env.DB_ROOT_PASSWORD,
   database: process.env.DB_DATABASE,
   logging: false,
-  models: [User],
+  models: [UserSchema],
 });
 
 export default connection;

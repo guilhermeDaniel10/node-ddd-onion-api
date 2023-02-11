@@ -4,5 +4,4 @@ export interface IUserDTO {
   email: string;
   address: string;
   password: string;
-  creationDate: Date;
 }

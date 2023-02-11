@@ -1,6 +1,7 @@
+import { DTO } from "./DTO";
 
-export abstract class Mapper<DomainEntityOrValueObject> {
-  // public static toDomain (raw: any): T;
-  // public static toDTO (t: T): DTO;
-  // public static toPersistence (t: T): any;
+export interface Mapper<T> {
+  toDomain(raw: any): T | null;
+  toDTO(t: T): DTO;
+  toPersistence(t: T): any;
 }

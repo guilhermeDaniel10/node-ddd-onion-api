@@ -18,21 +18,21 @@ export class UserLastName extends ValueObject<UserLastNameProps> {
     super(props);
   }
 
-  public static create(lastName: string): Result<UserLastNameProps> {
+  public static create(lastName: string): Result<UserLastName> {
     const nameResult = Guard.againstNullOrUndefined(lastName, "lastName");
 
     if (!nameResult.succeeded) {
-      return Result.fail<UserLastName>(nameResult.message);
+      return Result.fail<UserLastName>(nameResult.message || "");
     }
 
     const minLengthResult = Guard.againstAtLeast(this.minLength, lastName);
     if (!minLengthResult.succeeded) {
-      return Result.fail<UserLastName>(minLengthResult.message);
+      return Result.fail<UserLastName>(minLengthResult.message || "");
     }
 
     const maxLengthResult = Guard.againstAtMost(this.maxLength, lastName);
     if (!maxLengthResult.succeeded) {
-      return Result.fail<UserLastName>(maxLengthResult.message);
+      return Result.fail<UserLastName>(maxLengthResult.message || "");
     }
 
     return Result.ok<UserLastName>(new UserLastName({ value: lastName }));

@@ -8,6 +8,7 @@ dotenv.config();
 
 async function startServer() {
   const app = express();
+  app.use(morgan("dev"));
   await require("./loaders").default({ expressApp: app });
 
   app

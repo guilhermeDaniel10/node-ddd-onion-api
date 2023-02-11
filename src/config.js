@@ -27,4 +27,25 @@ export default {
   api: {
     prefix: "/api/v1",
   },
+
+  repos: {
+    user: {
+      name: "UserRepo",
+      path: "../repositories/implementation_repositories/UserRepo",
+    },
+  },
+
+  services: {
+    user: {
+      name: "UserService",
+      path: "../services/implementation_services/UserService"
+    }
+  },
+
+  controllers: {
+    user: {
+      name: "UserController",
+      path: "../controllers/user/implementation-controllers/UserController"
+    }
+  }
 };

@@ -1,15 +1,23 @@
 import { Container } from "typedi";
 
 export default ({
+  //sequelizeSchemas,
   controllers,
   repos,
   services,
 }: {
+  //sequelizeSchemas: { name: string; sequelizeSchema: any }[];
   controllers: { name: string; path: string }[];
   repos: { name: string; path: string }[];
   services: { name: string; path: string }[];
 }) => {
   try {
+    /*sequelizeSchemas.forEach((m) => {
+      // Notice the require syntax and the '.default'
+      let schema = require(m.sequelizeSchema).default;
+      Container.set(m.name, schema);
+    });*/
+
     repos.forEach((m) => {
       let repoClass = require(m.path).default;
       let repoInstance = Container.get(repoClass);
