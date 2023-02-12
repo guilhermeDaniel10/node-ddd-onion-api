@@ -28,6 +28,9 @@ export default {
     prefix: "/api/v1",
   },
 
+  jwtSecret:
+    process.env.JWT_SECRET || "my sakdfho2390asjod$%jl)!sdjas0i secret",
+
   repos: {
     user: {
       name: "UserRepo",
@@ -38,14 +41,14 @@ export default {
   services: {
     user: {
       name: "UserService",
-      path: "../services/implementation_services/UserService"
-    }
+      path: "../services/implementation_services/UserService",
+    },
   },
 
   controllers: {
     user: {
       name: "UserController",
-      path: "../controllers/user/implementation-controllers/UserController"
-    }
-  }
+      path: "../controllers/user/implementation-controllers/UserController",
+    },
+  },
 };

@@ -63,6 +63,7 @@ export class User extends AggregateRoot<UserProps> {
       { argument: props.password, argumentName: "password" },
     ];
 
+    console.log("CREATED WITH FIRST VALUE: " + props.password.value);
     const guardResult = Guard.againstNullOrUndefinedBulk(guardedProps);
 
     if (!guardResult.succeeded) {
@@ -75,6 +76,7 @@ export class User extends AggregateRoot<UserProps> {
         id
       );
 
+      console.log("VALUE WITH USER CREATION: " + user.password.getValue);
       return Result.ok<User>(user);
     }
   }

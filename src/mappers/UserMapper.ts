@@ -12,22 +12,20 @@ import { IUserDTO } from "../dto/IUserDTO";
 
 export class UserMapper /*implements Mapper<User>*/ {
   public static async toDomain(raw: any): Promise<User> {
-    console.log("HERE 3");
-    console.log(raw.password);
     const userEmailOrError = UserEmail.create(raw.email);
-    const userPasswordOrError = UserPassword.create({
+    const userPasswordOrError = await UserPassword.create({
       value: raw.password,
       hashed: true,
     });
+    console.log("Password in domain: " + userPasswordOrError.getValue);
     const firstNameOrError = UserFirstName.create(raw.firstName);
     const lastNameOrError = UserLastName.create(raw.lastName);
-    const passwordOrError = UserPassword.create({value: raw.password, hashed: true});
     const addressOrError = UserAddress.create(raw.address);
 
     const dtoResult = Result.combine([
       firstNameOrError,
       lastNameOrError,
-      passwordOrError,
+      userPasswordOrError,
       userEmailOrError,
       userPasswordOrError,
       addressOrError,
@@ -35,7 +33,6 @@ export class UserMapper /*implements Mapper<User>*/ {
 
     dtoResult.isFailure ? console.log(dtoResult.error) : "";
 
-    console.log(passwordOrError);
 
     const userOrError = User.create(
       {
@@ -43,10 +40,11 @@ export class UserMapper /*implements Mapper<User>*/ {
         lastName: lastNameOrError.getValue(),
         address: addressOrError.getValue(),
         email: userEmailOrError.getValue(),
-        password: passwordOrError.getValue(),
+        password: userPasswordOrError.getValue(),
       },
       new UniqueEntityID(raw.domainId)
     );
+
 
     if (userOrError.isFailure) {
       throw new Error(userOrError.error.toString());

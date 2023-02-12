@@ -2,6 +2,8 @@ import { ValueObject } from "../../core/domain/ValueObject";
 import * as bcrypt from "bcrypt";
 import { Result } from "../../core/logic/Result";
 import { Guard } from "../../core/logic/Guard";
+import { EncryptUtils } from "../../utils/EncryptUtil";
+import { StatusCodes } from "http-status-codes";
 
 export interface IUserPasswordProps {
   value: string;
@@ -13,6 +15,14 @@ export class UserPassword extends ValueObject<IUserPasswordProps> {
 
   get value(): string {
     return this.props.value;
+  }
+
+  get getValue(): string {
+    return this.props.value;
+  }
+
+  set passwordPropsValue(hashedPassword: string) {
+    this.props.value = hashedPassword;
   }
 
   private constructor(props: IUserPasswordProps) {
@@ -27,69 +37,53 @@ export class UserPassword extends ValueObject<IUserPasswordProps> {
     return this.props.hashed;
   }
 
-  private bcryptCompare(plainText: string, hashed: string): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      bcrypt.compare(plainText, hashed, (err, compareResult) => {
-        if (err) return resolve(false);
-        return resolve(compareResult);
-      });
-    });
-  }
-
   /**
    * @method comparePassword
    * @desc Compares as plain-text and hashed password.
    */
 
   public async comparePassword(plainTextPassword: string): Promise<boolean> {
-    let hashed: string;
-    if (this.isAlreadyHashed()) {
-      hashed = this.props.value;
-      return this.bcryptCompare(plainTextPassword, hashed);
-    } else {
-      return this.props.value === plainTextPassword;
-    }
+    return await EncryptUtils.comparePassword(
+      plainTextPassword,
+      this.props.value
+    );
   }
 
-  private hashPassword(password: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-      bcrypt.hash(password, 10, (err, hash) => {
-        if (err) reject(err);
-        resolve(hash);
-      });
-    });
-  }
-
-  public getHashedValue(): Promise<string> {
-    return new Promise((resolve) => {
-      if (this.isAlreadyHashed()) {
-        return resolve(this.props.value);
-      } else {
-        return resolve(this.hashPassword(this.props.value));
-      }
-    });
-  }
-
-  public static create(props: IUserPasswordProps): Result<UserPassword> {
+  public static async create(
+    props: IUserPasswordProps
+  ): Promise<Result<UserPassword>> {
     const propsResult = Guard.againstNullOrUndefined(props.value, "password");
 
     if (!propsResult.succeeded) {
       return Result.fail<UserPassword>(propsResult.message || "");
-    } else {
-      if (!props.hashed) {
-        if (!this.isAppropriateLength(props.value)) {
-          return Result.fail<UserPassword>(
-            "Password doesnt meet criteria [8 chars min]."
-          );
-        }
-      }
+    }
 
+    console.log("FIRST CREATE " + props.value);
+
+    if (props.hashed) {
       return Result.ok<UserPassword>(
         new UserPassword({
           value: props.value,
-          hashed: !!props.hashed === true,
+          hashed: true,
         })
       );
     }
+
+    if (!this.isAppropriateLength(props.value)) {
+      return Result.fail<UserPassword>(
+        "Password doesnt meet criteria [8 chars min].",
+        StatusCodes.UNPROCESSABLE_ENTITY
+      );
+    }
+    const hashedPassword = await EncryptUtils.hashPassword(props.value);
+
+    console.log("FIRST HASH: " + hashedPassword);
+
+    return Result.ok<UserPassword>(
+      new UserPassword({
+        value: hashedPassword,
+        hashed: true,
+      })
+    );
   }
 }

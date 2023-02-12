@@ -17,20 +17,14 @@ export default class UserRepo implements IUserRepo {
     return !!wantedUser === true;
   }
   async save(user: User): Promise<User> {
-    console.log("HEREEEEEE");
     const foundUser = await UserSchema.findOne({
       where: { email: user.emailValue },
     });
     try {
       if (!foundUser) {
         const rawUser: any = UserMapper.toPersistence(user);
-        console.log("HERE 1");
-        console.log(rawUser);
 
         const userCreated = await UserSchema.create(rawUser);
-        
-        console.log("HERE 2");
-        console.log(userCreated);
         await userCreated.save();
 
         return UserMapper.toDomain(userCreated);

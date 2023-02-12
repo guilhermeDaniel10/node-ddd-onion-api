@@ -6,7 +6,7 @@ import { Joi, celebrate } from "celebrate";
 const route = Router();
 
 export default (app: Router) => {
-  app.use("/users", route);
+  app.use("/auth", route);
   const ctrl = Container.get(config.controllers.user.name) as IUserController;
 
   route.post(
