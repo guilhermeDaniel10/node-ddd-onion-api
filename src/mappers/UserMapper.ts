@@ -17,7 +17,6 @@ export class UserMapper /*implements Mapper<User>*/ {
       value: raw.password,
       hashed: true,
     });
-    console.log("Password in domain: " + userPasswordOrError.getValue);
     const firstNameOrError = UserFirstName.create(raw.firstName);
     const lastNameOrError = UserLastName.create(raw.lastName);
     const addressOrError = UserAddress.create(raw.address);

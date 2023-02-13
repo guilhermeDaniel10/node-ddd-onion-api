@@ -36,6 +36,10 @@ export default {
       name: "UserRepo",
       path: "../repositories/implementation_repositories/UserRepo",
     },
+    systemRole: {
+      name: "SystemRoleRepo",
+      path: "../repositories/implementation_repositories/SystemRoleRepo"
+    }
   },
 
   services: {
@@ -43,6 +47,10 @@ export default {
       name: "UserService",
       path: "../services/implementation_services/UserService",
     },
+    systemRole: {
+      name: "SystemRoleService",
+      path: "../services/implementation_services/SystemRoleService",
+    }
   },
 
   controllers: {

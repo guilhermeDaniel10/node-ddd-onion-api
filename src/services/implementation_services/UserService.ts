@@ -42,8 +42,6 @@ export default class UserService implements IUserService {
       });
       const address = await UserAddress.create(userDTO.address);
 
-      console.log(password);
-
       const userOrError = await User.create({
         firstName: firstName.getValue(),
         lastName: lastName.getValue(),
@@ -82,8 +80,6 @@ export default class UserService implements IUserService {
       throw Result.fail<User>("User not found", StatusCodes.NOT_FOUND);
     }
 
-    console.log("Password as DTO: " + userLoginDTO.password);
-    console.log("Password as value: " + user?.password.getValue);
     const isValidPassword = await EncryptUtils.comparePassword(
       userLoginDTO.password,
       user.password.getValue
@@ -107,8 +103,6 @@ export default class UserService implements IUserService {
     const today = new Date();
     const exp = new Date(today);
     exp.setDate(today.getDate() + 60);
-
-    console.log(`Sign JWT for userId: ${user.id}`);
 
     const id = user.id.toString();
     const email = user.email.value;

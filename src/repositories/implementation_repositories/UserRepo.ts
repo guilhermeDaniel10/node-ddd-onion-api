@@ -53,7 +53,12 @@ export default class UserRepo implements IUserRepo {
     }
     return null;
   }
-  findById(id: string): Promise<User> {
-    throw new Error("Method not implemented.");
+  async findById(id: string): Promise<User | null> {
+    const wantedUser = await UserSchema.findByPk(id);
+
+    if (wantedUser != null) {
+      return UserMapper.toDomain(wantedUser);
+    }
+    return null;
   }
 }

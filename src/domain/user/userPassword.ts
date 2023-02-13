@@ -58,8 +58,6 @@ export class UserPassword extends ValueObject<IUserPasswordProps> {
       return Result.fail<UserPassword>(propsResult.message || "");
     }
 
-    console.log("FIRST CREATE " + props.value);
-
     if (props.hashed) {
       return Result.ok<UserPassword>(
         new UserPassword({
@@ -76,8 +74,6 @@ export class UserPassword extends ValueObject<IUserPasswordProps> {
       );
     }
     const hashedPassword = await EncryptUtils.hashPassword(props.value);
-
-    console.log("FIRST HASH: " + hashedPassword);
 
     return Result.ok<UserPassword>(
       new UserPassword({
