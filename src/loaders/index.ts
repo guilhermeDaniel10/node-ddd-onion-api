@@ -30,9 +30,19 @@ async function loadSequelizeSchemas(): Promise<void> {
     path: config.repos.user.path,
   };
 
+  const systemRoleRepo = {
+    name: config.repos.systemRole.name,
+    path: config.repos.systemRole.path,
+  };
+
   const userService = {
     name: config.services.user.name,
     path: config.services.user.path,
+  };
+
+  const systemRoleService = {
+    name: config.services.systemRole.name,
+    path: config.services.systemRole.path,
   };
 
   const userController = {
@@ -40,10 +50,15 @@ async function loadSequelizeSchemas(): Promise<void> {
     path: config.controllers.user.path,
   };
 
+  const systemRoleController = {
+    name: config.controllers.systemRole.name,
+    path: config.controllers.systemRole.path,
+  };
+
   await dependencyInjectorLoader({
     //sequelizeSchemas: [userSchema],
-    controllers: [userController],
-    repos: [userRepo],
-    services: [userService],
+    controllers: [systemRoleController, userController],
+    repos: [systemRoleRepo, userRepo],
+    services: [systemRoleService, userService],
   });
 }

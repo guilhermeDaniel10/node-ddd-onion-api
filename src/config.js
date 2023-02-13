@@ -58,5 +58,9 @@ export default {
       name: "UserController",
       path: "../controllers/user/implementation-controllers/UserController",
     },
+    systemRole: {
+      name: "SystemRoleController",
+      path: "../controllers/system-role/implementation-controllers/SystemRoleController"
+    }
   },
 };
